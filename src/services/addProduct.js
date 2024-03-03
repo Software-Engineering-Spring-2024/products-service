@@ -3,7 +3,7 @@ const {PRODUCTS, DATABASE_ERROR, ADD_SUCCESS, UNKNOWN_ERROR} = require("../const
 const {v4:uuidv4} =require('uuid');
 function formatProductData(req) {
     console.log(req);
-    const {title, description, pricePerDay, categoryId, ownerId, image: imgBase64} = req;
+    const {title, description, pricePerDay, categoryId, ownerId, imgBase64} = req;
     const productId = uuidv4();
     const data = {
         title:title,

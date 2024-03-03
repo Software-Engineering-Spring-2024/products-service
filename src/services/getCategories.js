@@ -8,7 +8,7 @@ const getCategories = async() => {
             .select('id,name');
         console.log(data)
         if(status===200){
-            response =  {code:200,data:data,message:SUCCESSFUL};
+            response =  {code:200,data,message:SUCCESSFUL};
         }
         else response= {code:500,data:{},message:DATABASE_ERROR}
         return response;
