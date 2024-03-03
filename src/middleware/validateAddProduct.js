@@ -1,9 +1,9 @@
 const {INVALID_REQUEST} = require("../constants/constants");
 const validateAddProduct = async(req,res,next) => {
     try {
-        const {title, description, pricePerDay, categoryId,ownerId, image: imgBase64} = req.body;
+        const {title, description, pricePerDay, categoryId, ownerId, imgBase64} = req.body;
         let errors = [];
-
+        
         if (!title || title==='') errors.push("Product title is required.");
         if (!description || description==='') errors.push("Description is required.");
         if (!pricePerDay) errors.push("Price per day is required.");
