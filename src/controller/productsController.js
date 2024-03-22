@@ -7,6 +7,9 @@ const {getProductList} = require("../services/getProductList");
 const {getProductById} = require("../services/getProductById");
 const {setProductStatus} = require("../services/setProductStatus")
 const {getProductByUserId} = require("../services/getProductByUserId");
+const {getUnApprovedProductList} = require("../services/getUnApprovedProductList");
+const {approveProduct} = require("../services/approveProduct");
+const {rejectProduct} = require("../services/rejectProduct");
 
 const addProductController = async(req,res) => {
 
@@ -97,4 +100,52 @@ const productByUserIdController = async(req,res) => {
 
 }
 
-module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController}
+const unapprovedProductListController = async(req,res) => {
+        try{
+                const responseData = await getUnApprovedProductList();
+                res.status(responseData.code).send(responseData);
+        }
+        catch (e) {
+                console.log(e);
+                res.status(500).send(
+                    {code:500,message:UNKNOWN_ERROR}
+                );
+        }
+}
+
+const approveProductController = async(req,res) => {
+        const params = req.query;
+        if(!params && !params.productId && (params.productId !== '') && !params.city && (params.city !== ''))
+        {
+                return res.status(400).send({code:400,message:INVALID_REQUEST})
+        }
+        try{
+                const responseData = await approveProduct(params.productId,params.city);
+                res.status(responseData.code).send(responseData);
+        }
+        catch (e) {
+                console.log(e);
+                res.status(500).send(
+                    {code:500,message:UNKNOWN_ERROR}
+                );
+        }
+}
+const rejectProductController = async(req,res) => {
+        const params = req.query;
+        if(!params && !params.userId && (params.userId !== ''))
+        {
+                return res.status(400).send({code:400,message:INVALID_REQUEST})
+        }
+        try{
+                const responseData = await rejectProduct(params.userId);
+                res.status(responseData.code).send(responseData);
+        }
+        catch (e) {
+                console.log(e);
+                res.status(500).send(
+                    {code:500,message:UNKNOWN_ERROR}
+                );
+        }
+}
+
+module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController}

@@ -1,6 +1,7 @@
 const express = require('express');
 const {addProductController, getCategoriesController, productListController, productByIdController,
-     productActiveStatusController, productByUserIdController
+     productActiveStatusController, productByUserIdController, unapprovedProductListController, approveProductController,
+     rejectProductController
 } = require("../controller/productsController");
 const validateAddProduct = require("../middleware/validateAddProduct");
 const validateProductId = require("../middleware/validateProductId");
@@ -22,6 +23,7 @@ router.get('/getProductsByUserId',productByUserIdController);
 
 //Get Categories List
 router.get('/categories',getCategoriesController);
+
 
 //Disable Product
 router.get('/set-active-status',validateProductId,verifyProductExists,productActiveStatusController);
