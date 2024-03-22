@@ -1,7 +1,7 @@
 const express = require('express');
 const {addProductController, getCategoriesController, productListController, productByIdController,
      productActiveStatusController, productByUserIdController, unapprovedProductListController, approveProductController,
-     rejectProductController
+     rejectProductController, latestProductListController
 } = require("../controller/productsController");
 const validateAddProduct = require("../middleware/validateAddProduct");
 const validateProductId = require("../middleware/validateProductId");
@@ -16,6 +16,9 @@ router.post('/add-product',validateAddProduct,addProductController);
 
 //Get Products List
 router.get('/product-list',productListController);
+
+// Get Featured Products for Homepage
+router.get('/latest-products-list', latestProductListController);
 
 //get product Details By Id
 router.get('/getProductById',validateProductId,productByIdController);

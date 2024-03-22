@@ -10,6 +10,7 @@ const {getProductByUserId} = require("../services/getProductByUserId");
 const {getUnApprovedProductList} = require("../services/getUnApprovedProductList");
 const {approveProduct} = require("../services/approveProduct");
 const {rejectProduct} = require("../services/rejectProduct");
+const {getLatestProductsList} = require("../services/getLatestProductsList")
 
 const addProductController = async(req,res) => {
 
@@ -148,4 +149,16 @@ const rejectProductController = async(req,res) => {
         }
 }
 
-module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController}
+const latestProductListController = async(req, res) => {
+        try{
+                const responseData = await getLatestProductsList();
+                res.status(responseData.code).send(responseData);
+        }
+        catch (e) {
+                console.log(e);
+                res.status(500).send(
+                    {code:500,message:UNKNOWN_ERROR}
+                );
+        }
+}
+module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController, latestProductListController}
