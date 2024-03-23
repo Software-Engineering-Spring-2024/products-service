@@ -43,7 +43,9 @@ const getCategoriesController = async(req,res) => {
 
 const productListController = async(req,res) => {
         try{
-                const responseData = await getProductList();
+                const filters = req.query
+                // console.log('productListController filters', filters)
+                const responseData = await getProductList(filters);
                 res.status(responseData.code).send(responseData);
         }
         catch (e) {
