@@ -4,6 +4,7 @@ const dotenv = require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const db = require('./model');
 const productRoutes = require('./routes/productRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 // const swaggerJsdoc = require('swagger-jsdoc');
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerConfig = require('./swagger-config')
@@ -23,6 +24,8 @@ app.use(bodyParser.json({limit: '50mb'}));
 
 //routes for the user API
 app.use('/api/products',productRoutes);
+//routes for admin API
+app.use('/api/admin',adminRoutes)
 
 //Listening
 app.listen(PORT, () => console.log(`Server is connected on ${PORT}`));

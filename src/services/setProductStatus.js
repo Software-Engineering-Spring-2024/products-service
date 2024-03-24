@@ -5,8 +5,12 @@ const {UNKNOWN_ERROR, SUCCESSFUL, PRODUCTS, DATABASE_ERROR} = require("../consta
 const setProductStatus = async(productId,status) => {
     try{
         let response;
+        let activeStatus = true;
+        if(status==='Inactive'){
+            activeStatus = false;
+        }
         const {data,error,status:dbStatus} = await supabase.from(PRODUCTS)
-            .update({active:status})
+            .update({active:activeStatus,status:status})
             .eq('product_id',productId);
         if(dbStatus===204){
             response =  {code:204,message:SUCCESSFUL};

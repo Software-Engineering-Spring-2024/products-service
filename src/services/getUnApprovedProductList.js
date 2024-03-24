@@ -1,6 +1,6 @@
 const supabase = require("../model");
 const {CATEGORIES, SUCCESSFUL, DATABASE_ERROR, UNKNOWN_ERROR, PRODUCTS} = require("../constants/constants");
-const getProductList = async() => {
+const getUnApprovedProductList = async() => {
     try {
         let response;
         const {data, error,status,statusText} = await supabase.from(PRODUCTS)
@@ -15,8 +15,7 @@ const getProductList = async() => {
                 ) as owner
               `)
             .eq('active',true)
-            .eq('approved',true)
-            .eq('status','Active');
+            .eq('status','Pending');
         console.log(data)
         if(status===200){
             response =  {code:200,data:data,message:SUCCESSFUL};
@@ -30,4 +29,4 @@ const getProductList = async() => {
     }
 }
 
-module.exports = {getProductList}
+module.exports = {getUnApprovedProductList}
