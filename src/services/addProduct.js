@@ -21,14 +21,14 @@ const addProduct = async (req) => {
 
         const productData = formatProductData(req);
         const {data: addData,error: addDataError,status,statusText} = await supabase.from(PRODUCTS)
-            .insert(productData);
+            .insert(productData).select();
         let response;
-        console.log(addDataError);
+        console.log('after adding', addData, addDataError);
         if(addDataError){
             response = {code:500,message:DATABASE_ERROR};
         }
         else{
-            response = {code:200,message:ADD_SUCCESS};
+            response = {code:200,message:ADD_SUCCESS, addData};
         }
         return response;
 
