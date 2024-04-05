@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const db = require('./model');
 const productRoutes = require('./routes/productRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 // const swaggerJsdoc = require('swagger-jsdoc');
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerConfig = require('./swagger-config')
@@ -26,6 +27,9 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use('/api/products',productRoutes);
 //routes for admin API
 app.use('/api/admin',adminRoutes)
+
+//routes for Reservation API
+app.use('/api/book',reservationRoutes);
 
 //Listening
 app.listen(PORT, () => console.log(`Server is connected on ${PORT}`));

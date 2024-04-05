@@ -9,6 +9,7 @@ module.exports = Object.freeze({
     ADD_SUCCESS: "Product Added Successfully",
     UNKNOWN_ERROR: "There is an Unknown error,Try Again",
     INVALID_REQUEST: "Invalid Request",
-    NO_PRODUCTS: "No Products found with given ID"
-
+    NO_PRODUCTS: "No Products found with given ID",
+    TRANSACTION_TABLE: "transaction-table",
+    BOOKING_SUCCESSFUL: "Booking Successful"
 });
