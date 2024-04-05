@@ -1,5 +1,5 @@
 const express = require('express');
-const {reserveProduct, rentedProductByUserIdController} = require("../controller/reservationController");
+const {reserveProduct, rentedProductByUserIdController, returnProductController} = require("../controller/reservationController");
 const {productByUserIdController} = require("../controller/productsController");
 
 const router = express.Router();
@@ -7,5 +7,7 @@ const router = express.Router();
 router.post('/reserve',reserveProduct)
 
 router.get('/getRentedProductsByUserId',rentedProductByUserIdController);
+
+router.get('/returnProduct',returnProductController)
 
 module.exports = router;
