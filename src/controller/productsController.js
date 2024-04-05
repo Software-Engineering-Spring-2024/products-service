@@ -57,7 +57,7 @@ const productListController = async(req,res) => {
 }
 
 const productByIdController = async(req,res) => {
-        // const params = req.query;
+        const params = req.query;
         // if(!params && !params.productId){res.status(400).send({code:400,message:INVALID_REQUEST})}
         try{
                 const responseData = await getProductById(params.productId);
