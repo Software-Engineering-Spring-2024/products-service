@@ -11,6 +11,7 @@ const {getUnApprovedProductList} = require("../services/getUnApprovedProductList
 const {approveProduct} = require("../services/approveProduct");
 const {rejectProduct} = require("../services/rejectProduct");
 const {getLatestProductsList} = require("../services/getLatestProductsList")
+const {getStoreLocationsList} = require("../services/getStoreLocationsList")
 
 const addProductController = async(req,res) => {
 
@@ -118,12 +119,12 @@ const unapprovedProductListController = async(req,res) => {
 
 const approveProductController = async(req,res) => {
         const params = req.query;
-        if(!params && !params.productId && (params.productId !== '') && !params.city && (params.city !== ''))
+        if(!params && !params.productId && (params.productId !== '') && !params.locationId && (params.locationId !== ''))
         {
                 return res.status(400).send({code:400,message:INVALID_REQUEST})
         }
         try{
-                const responseData = await approveProduct(params.productId,params.city);
+                const responseData = await approveProduct(params.productId,params.locationId);
                 res.status(responseData.code).send(responseData);
         }
         catch (e) {
@@ -163,4 +164,16 @@ const latestProductListController = async(req, res) => {
                 );
         }
 }
-module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController, latestProductListController}
+
+const getStoreLocationsController = async(req, res) => {
+        try {
+                const responseData = await getStoreLocationsList();
+                res.status(responseData.code).send(responseData);
+        } catch (error) {
+                console.log(e);
+                res.status(500).send(
+                    {code:500,message:UNKNOWN_ERROR}
+                );
+        }
+}
+module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController, latestProductListController, getStoreLocationsController}

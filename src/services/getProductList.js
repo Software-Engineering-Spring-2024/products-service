@@ -7,12 +7,19 @@ const getProductList = async(params) => {
         .select(`
             *,
             owner:user-details (
-              user_id,
-              firstName,
-              lastName,
-              email,
-              mobile
-            ) as owner
+                user_id,
+                firstName,
+                lastName,
+                email,
+                mobile
+              ),
+            location:store-locations (
+                id,
+                city,
+                address,
+                lat,
+                long
+            ) as location,
           `)
         .eq('active',true)
         .eq('approved',true)
@@ -34,7 +41,7 @@ const getProductList = async(params) => {
             response =  {code:200,data:data,message:SUCCESSFUL};
         }
         else response= {code:500,data:{},message:DATABASE_ERROR}
-                return response;
+        return response;
     }
     catch (e){
         console.log(e);
