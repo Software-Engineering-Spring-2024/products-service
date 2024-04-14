@@ -12,7 +12,14 @@ const getLatestProductsList = async() => {
                   lastName,
                   email,
                   mobile
-                ) as owner
+                ),
+                location:store-locations (
+                    id,
+                    city,
+                    address,
+                    lat,
+                    long
+                )
               `)
             .eq('active',true)
             .eq('approved',true)

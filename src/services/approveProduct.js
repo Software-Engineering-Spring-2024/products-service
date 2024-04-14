@@ -1,11 +1,11 @@
 const supabase = require("../model");
 const {PRODUCTS, SUCCESSFUL, NO_PRODUCTS, DATABASE_ERROR, UNKNOWN_ERROR} = require("../constants/constants");
 
-const approveProduct = async(productId,city) => {
+const approveProduct = async(productId,locationId) => {
     try {
         let response;
         const {data, error,status,statusText} = await supabase.from(PRODUCTS)
-            .update({approved:true,location:city,status:'Active'})
+            .update({approved:true,location_id:locationId,status:'Active'})
             .eq('product_id',productId);
         if(status===204){
             response =  {code:204,message:SUCCESSFUL};

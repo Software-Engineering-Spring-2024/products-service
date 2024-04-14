@@ -1,6 +1,7 @@
 module.exports = Object.freeze({
     PRODUCTS: 'products',
     CATEGORIES:'category',
+    STORE_LOCATIONS: 'store-locations',
 
     SUCCESSFUL: 'Successful',
 
