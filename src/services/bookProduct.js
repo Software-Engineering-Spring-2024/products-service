@@ -21,7 +21,7 @@ const bookProduct = async(req) => {
         }
         else{
             await setProductStatus(req.product_id, 'Booked');
-            // await sendBookingMail(input_data.product_id,input_data.renter_id);
+            await sendBookingMail(input_data.product_id,input_data.renter_id);
             response = {code:200,message:BOOKING_SUCCESSFUL};
         }
         return response;
