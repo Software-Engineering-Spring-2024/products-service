@@ -1,7 +1,7 @@
 const express = require('express');
 const {addProductController, getCategoriesController, productListController, productByIdController,
      productActiveStatusController, productByUserIdController, unapprovedProductListController, approveProductController,
-     rejectProductController, latestProductListController, submitTicket
+     rejectProductController, latestProductListController, submitTicket, getRenterDetails
 } = require("../controller/productsController");
 const validateAddProduct = require("../middleware/validateAddProduct");
 const validateProductId = require("../middleware/validateProductId");
@@ -35,4 +35,6 @@ router.get('/set-active-status',validateProductId,verifyProductExists,productAct
 //ticket
 router.post('/submitTicket', submitTicket);
 
+
+router.get('/renter', getRenterDetails);
 module.exports = router;

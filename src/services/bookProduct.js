@@ -1,7 +1,7 @@
 const supabase = require('../model');
 const {TRANSACTION_TABLE, DATABASE_ERROR, ADD_SUCCESS, BOOKING_SUCCESSFUL} = require("../constants/constants");
 const {setProductStatus} = require("./setProductStatus");
-const sendBookingMail = require("./sendMail");
+const {sendBookingMail} = require("./sendMail");
 
 function formatInput(req) {
     return {product_id:req.product_id,
