@@ -1,7 +1,7 @@
 const supabase = require('../model');
 const {TRANSACTION_TABLE, DATABASE_ERROR, ADD_SUCCESS, BOOKING_SUCCESSFUL} = require("../constants/constants");
 const {setProductStatus} = require("./setProductStatus");
-const sendBookingMail = require("./sendMail");
+const {sendBookingMail} = require("./sendMail");
 
 function formatInput(req) {
     return {product_id:req.product_id,
@@ -21,7 +21,7 @@ const bookProduct = async(req) => {
         }
         else{
             await setProductStatus(req.product_id, 'Booked');
-            // await sendBookingMail(input_data.product_id,input_data.renter_id);
+            await sendBookingMail(input_data.product_id,input_data.renter_id);
             response = {code:200,message:BOOKING_SUCCESSFUL};
         }
         return response;

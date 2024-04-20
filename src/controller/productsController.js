@@ -12,6 +12,9 @@ const {approveProduct} = require("../services/approveProduct");
 const {rejectProduct} = require("../services/rejectProduct");
 const {getLatestProductsList} = require("../services/getLatestProductsList")
 const {getStoreLocationsList} = require("../services/getStoreLocationsList")
+const createTicket = require("../services/createTicket");
+const {sendTicketNotificationToOwner} = require("../services/sendMail");
+const getRenterDetailsByProductId = require("../services/getRenterDetailsByProductId");
 
 const addProductController = async(req,res) => {
 
@@ -176,4 +179,118 @@ const getStoreLocationsController = async(req, res) => {
                 );
         }
 }
-module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController, latestProductListController, getStoreLocationsController}
+
+const submitTicket = async (req, res) => {
+        try {
+                const { productId, ticketType, description, userId } = req.body;
+                const result = await createTicket(productId, ticketType, description, userId);
+                res.status(200).json({ message: "Ticket submitted successfully", data: result });
+        } catch (error) {
+                console.error('Error submitting ticket:', error.message);
+                res.status(500).json({ message: "Failed to submit ticket", error: error.message });
+        }
+};
+
+const getTickets = async (req, res) => {
+        try {
+                const { data, error } = await supabase
+                    .from('tickets')
+                    .select(`
+                                *,
+                                products:product_id (
+                                    product_id,
+                                    title,
+                                    description,
+                                    owner_id
+                                )
+                            `)
+                    .eq('status', 'Open');
+
+
+                if (error) throw error;
+                res.status(200).json({ tickets: data });
+        } catch (error) {
+                res.status(500).json({ message: 'Error fetching tickets', error: error.message });
+        }
+};
+
+const approveRefund = async (req, res) => {
+        const { ticketId } = req.body;
+        try {
+                const { data, error } = await supabase
+                    .from('tickets')
+                    .update({ status: 'Approved' })
+                    .match({ id: ticketId });
+
+                if (error) throw error;
+                res.status(200).json({ message: 'Refund approved successfully', data });
+        } catch (error) {
+                res.status(500).json({ message: 'Error approving refund', error: error.message });
+        }
+};
+
+const rejectRefund = async (req, res) => {
+        const { ticketId } = req.body;
+        try {
+                const { data, error } = await supabase
+                    .from('tickets')
+                    .update({ status: 'Rejected' })
+                    .match({ id: ticketId });
+
+                if (error) throw error;
+                res.status(200).json({ message: 'Refund rejected successfully', data });
+        } catch (error) {
+                res.status(500).json({ message: 'Error rejecting refund', error: error.message });
+        }
+};
+
+const sendEmail = async (req, res) => {
+        const { ticketId, ownerId } = req.body;
+        try {
+                console.log(`Sending email to owner ${ownerId} for ticket ${ticketId}`);
+                await sendTicketNotificationToOwner(ticketId, ownerId);
+                res.status(200).json({ message: 'Email sent successfully' });
+        } catch (error) {
+                res.status(500).json({ message: 'Error sending email', error: error.message });
+        }
+};
+const closeTicket = async (req, res) => {
+        const { ticketId } = req.body;
+        try {
+                const { data, error } = await supabase
+                    .from('tickets')
+                    .update({ status: 'Closed' })
+                    .match({ id: ticketId });
+
+                if (error) throw error;
+                res.status(200).json({ message: 'Ticket closed successfully', data });
+        } catch (error) {
+                res.status(500).json({ message: 'Error closing ticket', error: error.message });
+        }
+};
+
+const getRenterDetails = async (req, res) => {
+        const params = req.query;
+        console.log(params);
+
+        try {
+                const productId = params.product_id;
+                const userDetails = await getRenterDetailsByProductId(productId);
+                console.log(userDetails);
+
+                // Check if userDetails is either non-existent or an empty array
+                if (!userDetails || userDetails.length === 0) {
+                        // End the function here after sending the response to avoid further execution
+                        return res.status(200).json({ message: "No Renters" });
+                }
+
+                // If userDetails is not empty, send the details
+                res.status(200).json(userDetails);
+        } catch (error) {
+                console.error("Error fetching renter details:", error);
+                res.status(500).json({ error: error.message });
+        }
+
+};
+module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController, latestProductListController, getStoreLocationsController,submitTicket
+,sendEmail,getTickets,rejectRefund,approveRefund,closeTicket,getRenterDetails}
