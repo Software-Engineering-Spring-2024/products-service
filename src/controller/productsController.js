@@ -14,6 +14,7 @@ const {getLatestProductsList} = require("../services/getLatestProductsList")
 const {getStoreLocationsList} = require("../services/getStoreLocationsList")
 const createTicket = require("../services/createTicket");
 const {sendTicketNotificationToOwner} = require("../services/sendMail");
+const getRenterDetailsByProductId = require("../services/getRenterDetailsByProductId");
 
 const addProductController = async(req,res) => {
 
@@ -267,5 +268,29 @@ const closeTicket = async (req, res) => {
                 res.status(500).json({ message: 'Error closing ticket', error: error.message });
         }
 };
+
+const getRenterDetails = async (req, res) => {
+        const params = req.query;
+        console.log(params);
+
+        try {
+                const productId = params.product_id;
+                const userDetails = await getRenterDetailsByProductId(productId);
+                console.log(userDetails);
+
+                // Check if userDetails is either non-existent or an empty array
+                if (!userDetails || userDetails.length === 0) {
+                        // End the function here after sending the response to avoid further execution
+                        return res.status(200).json({ message: "No Renters" });
+                }
+
+                // If userDetails is not empty, send the details
+                res.status(200).json(userDetails);
+        } catch (error) {
+                console.error("Error fetching renter details:", error);
+                res.status(500).json({ error: error.message });
+        }
+
+};
 module.exports = {addProductController,getCategoriesController,productListController,productByIdController,productActiveStatusController,productByUserIdController,unapprovedProductListController,approveProductController,rejectProductController, latestProductListController, getStoreLocationsController,submitTicket
-,sendEmail,getTickets,rejectRefund,approveRefund,closeTicket}
+,sendEmail,getTickets,rejectRefund,approveRefund,closeTicket,getRenterDetails}

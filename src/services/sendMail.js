@@ -88,7 +88,7 @@ const sendTicketNotificationToOwner = async (ticket_id, owner_id) => {
     }
 
     // Construct the email message based on the ticket details
-    const subject = `Ticket Update: ${ticket.title}`;
+    const subject = `Ticket Update: ${ticket.products.title}`;
     const message = `Hello ${owner[0].username},\nThere is a complaint regarding your product titled "${ticket.products.title}":\n${ticket.description}\n\nPlease review it at your earliest convenience.\n\nBest regards,\nYour Support Team`;
 
     // Prepare mail context
